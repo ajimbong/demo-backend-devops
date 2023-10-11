@@ -23,7 +23,7 @@ jobs:
         run: php artisan key:generate
 
       - name: Copy files to Laravel Directory
-        run: cp .  /var/www/laravel/
+        run: cp -r .  /var/www/laravel/
       
       - run: cd /var/www/laravel
 
