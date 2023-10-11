@@ -1,0 +1,34 @@
+name: Deploy Laravel Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Set up .env file
+        run: cp .env.example .env
+
+      - name: Generate Application Key
+        run: php artisan key:generate
+
+      - name: Copy files to Laravel Directory
+        run: cp .  /var/www/laravel/
+      
+      - run: cd /var/www/laravel
+
+      - run: chown -R www-data storage
+
+      - run: chown -R www-data bootstrap/cache
+
+      - run: nginx -s reload
