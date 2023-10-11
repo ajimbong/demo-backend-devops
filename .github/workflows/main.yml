@@ -25,10 +25,14 @@ jobs:
       - name: Copy files to Laravel Directory
         run: cp -r .  /var/www/laravel/
       
-      - run: cd /var/www/laravel
+      - run: sudo chown -R www-data:www-data /var/www/laravel
 
-      - run: chown -R www-data storage
+      - run: sudo chmod -R 775 /var/www/laravel/storage
+      
+      - run: sudo chmod -R 775 /var/www/laravel/bootstrap/cache
 
-      - run: chown -R www-data bootstrap/cache
+      - run: sudo chmod 664 /var/www/laravel/.env
 
-      - run: nginx -s reload
+      - run: sudo systemctl restart php8.1-fpm
+
+      - run: sudo systemctl restart nginx
